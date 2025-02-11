@@ -9,8 +9,7 @@ public class Texture
     public Texture(string path)
     {
         handle = GL.GenTexture();
-
-        GL.ActiveTexture(TextureUnit.Texture0);
+        Use();
 
         StbImage.stbi_set_flip_vertically_on_load(1);
 
@@ -29,10 +28,21 @@ public class Texture
                 pixels: image.Data
             );
         }
+
+        // scale
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMinFilter.Nearest);
+
+        // repeat
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+
+        GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
     }
 
     public void Use()
     {
+        GL.ActiveTexture(TextureUnit.Texture0);
         GL.BindTexture(TextureTarget.Texture2D, handle);
     }
 }

@@ -17,23 +17,13 @@ public class Shader
 
         GL.ShaderSource(vertex_shader, vertex_shader_source);
         GL.ShaderSource(frag_shader, frag_shader_source);
-
         GL.CompileShader(vertex_shader);
-        GL.GetShader(vertex_shader, ShaderParameter.CompileStatus, out int success);
-        if (success == 0) {
-            Console.WriteLine(GL.GetShaderInfoLog(frag_shader));
-        }
+        GL.CompileShader(frag_shader);
 
         handle = GL.CreateProgram();
-
         GL.AttachShader(handle, vertex_shader);
         GL.AttachShader(handle, frag_shader);
-
         GL.LinkProgram(handle);
-        GL.GetProgram(handle, GetProgramParameterName.LinkStatus, out int sucess);
-        if (success == 0) {
-            Console.WriteLine(GL.GetProgramInfoLog(handle));
-        }
 
         GL.DetachShader(handle, vertex_shader);
         GL.DetachShader(handle, frag_shader);
