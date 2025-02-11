@@ -7,10 +7,10 @@ public class Shader
     
     private bool is_disposed = false;
 
-    public Shader(string vertex_path, string frag_path)
+    public Shader(string vertex, string frag)
     {
-        string vertex_shader_source = File.ReadAllText(vertex_path);
-        string frag_shader_source = File.ReadAllText(frag_path);
+        string vertex_shader_source = File.ReadAllText(vertex);
+        string frag_shader_source = File.ReadAllText(frag);
 
         var vertex_shader = GL.CreateShader(ShaderType.VertexShader);
         var frag_shader = GL.CreateShader(ShaderType.FragmentShader);

@@ -1,5 +1,5 @@
+// Vertex Texture Shader
 #version 330 core
-// Vertex Shader
 
 layout (location = 0) in vec3 pos_cord;
 layout (location = 1) in vec2 tex_cord;
