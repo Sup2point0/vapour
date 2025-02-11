@@ -10,14 +10,15 @@ class Window : GameWindow
 {
     #region ATTRIBUTES
 
-    Shader? shader;
+    private Shader? shader;
+    private Texture? texture;
 
-    int vbo;  // vertex buffer object
-    int vao;  // vertex array object
-    int ebo;  // element buffer object
+    private int vbo;  // vertex buffer object
+    private int vao;  // vertex array object
+    private int ebo;  // element buffer object
 
-    float[] vertices = [];
-    uint[] indices = [];
+    public float[] vertices = [];
+    public uint[] indices = [];
 
     #endregion
 
@@ -50,46 +51,62 @@ class Window : GameWindow
 
         vbo = GL.GenBuffer();
         GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-        
-        ebo = GL.GenBuffer();
-        GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
-
         GL.BufferData(
             BufferTarget.ArrayBuffer,
             size: vertices.Length * sizeof(float),
             data: vertices,
             BufferUsageHint.StaticDraw
         );
+        
+        ebo = GL.GenBuffer();
+        GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
         GL.BufferData(
             BufferTarget.ElementArrayBuffer,
-            size: vertices.Length * sizeof(uint),
+            size: indices.Length * sizeof(uint),
             data: indices,
             BufferUsageHint.StaticDraw
         );
+
+        shader = new Shader("shaders/shader.vert.glsl", "shaders/shader.frag.glsl");
+        shader.Use();
+
+        GL.EnableVertexAttribArray(0);
         GL.VertexAttribPointer(
             index: 0,
             size: 3,
             VertexAttribPointerType.Float,
             normalized: false,
-            stride: 0,
+            stride: 5 * sizeof(float),
             offset: 0
         );
-        GL.EnableVertexAttribArray(0);
-        
 
-        shader = new Shader("shaders/shader.vert", "shaders/shader.frag");
+        texture = new Texture("../.assets/terabyte.png");
+        texture.Use();
 
-        GL.ClearColor(0.25f, 0.5f, 1f, 1.0f);
+        GL.EnableVertexAttribArray(1);
+        GL.VertexAttribPointer(
+            index: 1,
+            size: 2,
+            VertexAttribPointerType.Float,
+            normalized: false,
+            5 * sizeof(float),
+            3 * sizeof(float)
+        );
+
+        GL.ClearColor(0.03584f, 0.0922f, 0.24582f, 1.0f);
     }
 
     protected override void OnRenderFrame(FrameEventArgs e)
     {
         base.OnRenderFrame(e);
 
-        shader?.Use();
-        GL.BindVertexArray(vao);
-        
         GL.Clear(ClearBufferMask.ColorBufferBit);
+
+        GL.BindVertexArray(vao);
+
+        shader?.Use();
+        texture?.Use();
+        
         // GL.DrawArrays(PrimitiveType.Triangles, 0, vertices.Length / 3);
         GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
 
@@ -117,21 +134,6 @@ class Window : GameWindow
         base.OnUnload();
 
         shader?.Dispose();
-    }
-
-    #endregion
-
-    #region METHODS
-
-    public void AddVertices(float[] vertices)
-    {
-        this.vertices = vertices;
-    }
-
-    public void AddIndexedVertices(float[] vertices, uint[] indices)
-    {
-        AddVertices(vertices);
-        this.indices = indices;
     }
 
     #endregion
