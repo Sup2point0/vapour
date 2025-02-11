@@ -3,7 +3,9 @@ using OpenTK.Graphics.OpenGL4;
 
 public class Shader
 {
-    int handle;
+    public int handle;
+    
+    private bool is_disposed = false;
 
     public Shader(string vertex_path, string frag_path)
     {
@@ -42,5 +44,26 @@ public class Shader
     public void Use()
     {
         GL.UseProgram(handle);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!is_disposed) {
+            GL.DeleteProgram(handle);
+            is_disposed = true;
+        }
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    ~Shader()
+    {
+        if (is_disposed == false) {
+            Console.Error.WriteLine("RESOURCE LEAK: Did you forget to call `.Dispose()` on `Shader`?");
+        }
     }
 }
