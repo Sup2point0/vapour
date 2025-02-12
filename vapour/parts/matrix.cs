@@ -1,3 +1,6 @@
+namespace Vapour.Effects;
+
+
 /// <summary>
 /// A matrix of pixels for rendering effects.
 /// </summary>
@@ -13,7 +16,7 @@ public class EffectMatrix<T>
     public Layer? layer;
 
     /// Number of points for each vertex in the vertex array. Defaults to 4 for (x, y, z, brightness).
-    public required vertex_chunk_size = 4;
+    public required int vertex_chunk_size = 4;
 
     public (int, int) centre {
         get => (this.width / 2, this.height / 2);
@@ -25,28 +28,38 @@ public class EffectMatrix<T>
     #region CORE
 
     public EffectMatrix(int size)
-        => this.Init(size, size);
-
-    public EffectMatrix(int width, int height)
-        => this.Init(width, height);
-
-    public EffectMatrix(params int[] size)
     {
-        this.Init(size, size);
+        this.width = size;
+        this.height = size;
+        this.pixels = new T[this.width, this.height];
+        this.vertex_chunk_size = 4;
     }
 
-    protected void Init(int width, int height)
+    public EffectMatrix(int width, int height)
     {
         this.width = width;
         this.height = height;
-        this.pixels = new T[width, height];
+        this.pixels = new T[this.width, this.height];
+        this.vertex_chunk_size = 4;
     }
 
-    public T this[(int x, int y) index]
-        => this.pixels[x, y];
+    public EffectMatrix(params int[] size)
+    {
+        this.width = size[0];
+        this.height = size[1];
+        this.pixels = new T[this.width, this.height];
+        this.vertex_chunk_size = 4;
+    }
 
-    public T this[int x, int y]
-        => this.pixels[x, y];
+    public T this[int x, int y] {
+        get => this.pixels[x, y];
+        set => this.pixels[x, y] = value;
+    }
+
+    public T this[(int x, int y) index] {
+        get => this.pixels[index.x, index.y];
+        set => this.pixels[index.x, index.y] = value;
+    }
 
     #endregion
 
@@ -63,8 +76,7 @@ public class EffectMatrix<T>
     }
 
     /// Generate the arrays of vertices and indices for rendering the pixel matrix.
-    protected (float[] vertices, uint[] indices)
-        GeneratePixels(float[]? init_value = null)
+    protected (float[] vertices, uint[] indices) GeneratePixels(float[]? init_value = null)
     {
         int area, len;
         int chunk, offset, stride;
@@ -94,12 +106,12 @@ public class EffectMatrix<T>
                 vertices[offset + stride +1] = frac_y;
                 vertices[offset + stride +2] = 0f;
 
-                if (!this.init_value) {
+                if (init_value == null) {
                     vertices[offset + stride +3] = 0f;  // start as no colour
                 }
                 else {
                     for (int k = 0; k < this.vertex_chunk_size; k++) {
-                        vertices[offset + stride +3 +k] = this.init_value[k];
+                        vertices[offset + stride +3 +k] = init_value[k];
                     }
                 }
             }
@@ -110,7 +122,7 @@ public class EffectMatrix<T>
 
         area = this.width * this.height;
         len = area * 6;
-        var indices = uint[len];
+        var indices = new uint[len];
 
         for (int i = 0; i < this.width; i++)
         {
@@ -124,14 +136,14 @@ public class EffectMatrix<T>
                 stride = j * 6;
 
                 // upper-left triangle
-                indices[offset + stride]    = offset +j;
-                indices[offset + stride +1] = offset +j +1;
-                indices[offset + stride +2] = next_offset +j +1;
+                indices[offset + stride]    = (uint)(offset +j);
+                indices[offset + stride +1] = (uint)(offset +j +1);
+                indices[offset + stride +2] = (uint)(next_offset +j +1);
 
                 // lower-right triangle
-                indices[offset + stride +3] = offset +j;
-                indices[offset + stride +4] = next_offset +j;
-                indices[offset + stride +5] = next_offset +j +1;
+                indices[offset + stride +3] = (uint)(offset +j);
+                indices[offset + stride +4] = (uint)(next_offset +j);
+                indices[offset + stride +5] = (uint)(next_offset +j +1);
             }
         }
 

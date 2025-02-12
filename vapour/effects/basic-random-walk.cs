@@ -1,13 +1,13 @@
 namespace Vapour.Effects;
 
 
-public class BasicRandomWalk<T> : EffectMatrix<T>
+public class BasicRandomWalk : EffectMatrix<bool>
 {
     RandomWalker walker;
 
     public BasicRandomWalk(params int[] size) : base(size)
     {
-        this.walker = new RandomWalker(this.centre);
+        this.walker = new(this, this.centre);
     }
 
     public void Update()
@@ -17,8 +17,11 @@ public class BasicRandomWalk<T> : EffectMatrix<T>
 }
 
 
-private class RandomWalker : Walker<BasicRandomWalk>
+class RandomWalker : Walker<bool>
 {
+    public RandomWalker(EffectMatrix<bool> source, (int x, int y) pos) : base(source, pos)
+    {}
+
     public override void Update()
     {
         base.RandomStep();

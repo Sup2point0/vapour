@@ -1,12 +1,16 @@
 namespace Vapour.Effects;
 
 
+/// <summary>
 /// An entity that moves along the pixels of an effect matrix. Functionality is added through deriving from the class and implementing `.Update()`, which is called every frame.
 ///
 /// Position is bound within dimensions of effect matrix. Note cords are 1-indexed, i.e. bottom-left is (1, 1) and top-right is (size, size).
-public class Walker<TMatrix> where TMatrix : EffectMatrix
+/// </summary>
+public class Walker<T>
 {
-    public TMatrix source;
+    #region FIELDS
+
+    public EffectMatrix<T> source;
 
     private int _x;
     public int x {
@@ -39,15 +43,23 @@ public class Walker<TMatrix> where TMatrix : EffectMatrix
     }
 
     public (int, int) xy {
-         get => (this.x, this.y);
+        get => (this.x, this.y);
     }
 
-    public Walker(TMatrix source, (int x, int y))
+    #endregion
+
+    #region CORE
+
+    public Walker(EffectMatrix<T> source, (int x, int y) pos)
     {
         this.source = source;
         this.x = x;
         this.y = y;
     }
+
+    #endregion
+
+    #region METHODS
 
     public virtual void Update()
     {
@@ -68,4 +80,6 @@ public class Walker<TMatrix> where TMatrix : EffectMatrix
              this.y += Utils.Rand.Direction();
         }
     }
+
+    #endregion
 }
