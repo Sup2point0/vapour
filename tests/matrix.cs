@@ -15,9 +15,9 @@ public class Test_EffectMatrix
         Assert.IsTrue(matrix.height == 3);
         Assert.IsTrue(matrix.centre == (2, 2));
 
-        matrix = newEffectMatrix<int>(4) {
-            vertex_chunk_size = 5;
-        }
+        matrix = new EffectMatrix<int>(4) {
+            vertex_chunk_size = 5
+        };
         Assert.IsTrue(matrix.width == 4);
         Assert.IsTrue(matrix.height == 4);
         Assert.IsTrue(matrix.centre == (2, 2));
@@ -34,18 +34,18 @@ public class Test_EffectMatrix
         var (vertices, indices) = m.GeneratePixels();
 
         Assert.IsTrue( vertices.Length == 4 * 4 );
-        Assert.IsTrue( vertices[0..4] == [-1f, -1f, 0f, 0f] );
-        Assert.IsTrue( vertices[^4..^1] == [1f, 1f, 0f, 0f] );
+        Assert.IsTrue( vertices[0..4]   == new float[] { -1f, -1f, 0f, 0f } );
+        Assert.IsTrue( vertices[^4..^1] == new float[] { 1f, 1f, 0f, 0f } );
 
         Assert.IsTrue( indices.Length == 3 * 3 * 6 );
 
         // left column
-        Assert.IsTrue( indices[0..3] == [0, 1, 4] );
-        Assert.IsTrue( indices[3..6] == [0, 2, 4] );
-        Assert.IsTrue( indices[6..9] == [1, 2, 5] );
-        Assert.IsTrue( indices[9..12] == [1, 4, 5] );
-        Assert.IsTrue( indices[12..15] == [2, 3, 6] );
-        Assert.IsTrue( indices[15..18] == [2, 5, 6] );
+        Assert.IsTrue( indices[0..3]   == new uint[] { 0, 1, 4 } );
+        Assert.IsTrue( indices[3..6]   == new uint[] { 0, 2, 4 } );
+        Assert.IsTrue( indices[6..9]   == new uint[] { 1, 2, 5 } );
+        Assert.IsTrue( indices[9..12]  == new uint[] { 1, 4, 5 } );
+        Assert.IsTrue( indices[12..15] == new uint[] { 2, 3, 6 } );
+        Assert.IsTrue( indices[15..18] == new uint[] { 2, 5, 6 } );
 
         // middle column
 
