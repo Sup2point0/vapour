@@ -1,16 +1,16 @@
 namespace Vapour.Effects;
 
 
-public class BasicRandomWalk : EffectMatrix<bool>
+public class BasicRandomWalkMatrix : EffectMatrix<bool>
 {
     RandomWalker walker;
 
-    public BasicRandomWalk(params int[] size) : base(size)
+    public BasicRandomWalkMatrix(params int[] size) : base(size)
     {
         this.walker = new(this, this.centre);
     }
 
-    public void Update()
+    public override void Update()
     {
         this.walker.Update();
     }

@@ -16,7 +16,7 @@ public class EffectMatrix<T>
     public Layer? layer;
 
     /// Number of points for each vertex in the vertex array. Defaults to 4 for (x, y, z, brightness).
-    public required int vertex_chunk_size = 4;
+    public int vertex_chunk_size = 4;
 
     public (int, int) centre {
         get => (this.width / 2, this.height / 2);
@@ -35,7 +35,6 @@ public class EffectMatrix<T>
         this.width = width;
         this.height = height;
         this.pixels = new T[this.width, this.height];
-        this.vertex_chunk_size = 4;
     }
 
     public EffectMatrix(params int[] size) : this(size[0], size[1])
@@ -62,11 +61,12 @@ public class EffectMatrix<T>
         var (vertices, indices) = GeneratePixels();
         this.layer.vertices = vertices;
         this.layer.indices = indices;
-
     }
 
+    public virtual void Update() {}
+
     /// Generate the arrays of vertices and indices for rendering the pixel matrix.
-    protected (float[] vertices, uint[] indices) GeneratePixels(float[]? init_value = null)
+    public (float[] vertices, uint[] indices) GeneratePixels(float[]? init_value = null)
     {
         int area, len;
         int chunk, offset, stride;
@@ -138,6 +138,12 @@ public class EffectMatrix<T>
         }
 
         return (vertices: vertices, indices: indices);
+    }
+
+    // TODO
+    public (float[] vertices, uint[] indices) UpdatePixels()
+    {
+        return (vertices: new float[0], indices: new uint[0]);
     }
 
     #endregion
