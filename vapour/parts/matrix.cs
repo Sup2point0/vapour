@@ -27,13 +27,8 @@ public class EffectMatrix<T>
 
     #region CORE
 
-    public EffectMatrix(int size)
-    {
-        this.width = size;
-        this.height = size;
-        this.pixels = new T[this.width, this.height];
-        this.vertex_chunk_size = 4;
-    }
+    public EffectMatrix(int size) : this(size, size)
+    {}
 
     public EffectMatrix(int width, int height)
     {
@@ -43,13 +38,8 @@ public class EffectMatrix<T>
         this.vertex_chunk_size = 4;
     }
 
-    public EffectMatrix(params int[] size)
-    {
-        this.width = size[0];
-        this.height = size[1];
-        this.pixels = new T[this.width, this.height];
-        this.vertex_chunk_size = 4;
-    }
+    public EffectMatrix(params int[] size) : this(size[0], size[1])
+    {}
 
     public T this[int x, int y] {
         get => this.pixels[x, y];
