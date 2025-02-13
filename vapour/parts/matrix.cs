@@ -2,21 +2,20 @@ namespace Vapour.Effects;
 
 
 /// <summary>
-/// A matrix of pixels for rendering effects.
+/// A matrix of pixels for tracking effects.
 /// </summary>
 public class EffectMatrix<T>
 {
     #region FIELDS
 
+    /// Pixels in the matrix, where each pixel stores a colour.
     public T[,] pixels;
 
     public readonly int width;
     public readonly int height;
 
-    public Layer? layer;
-
     /// Number of points for each vertex in the vertex array. Defaults to 4 for (x, y, z, brightness).
-    public required int vertex_chunk_size = 4;
+    public int vertex_chunk_size { get; init; } = 4;
 
     public (int, int) centre {
         get => (this.width / 2, this.height / 2);
@@ -27,26 +26,27 @@ public class EffectMatrix<T>
 
     #region CORE
 
-    public EffectMatrix(int size) : this(size, size)
-    {}
-
     public EffectMatrix(int width, int height)
     {
         this.width = width;
         this.height = height;
         this.pixels = new T[this.width, this.height];
-        this.vertex_chunk_size = 4;
     }
+
+    public EffectMatrix(int size) : this(size, size)
+    {}
 
     public EffectMatrix(params int[] size) : this(size[0], size[1])
     {}
 
-    public T this[int x, int y] {
+    public T this[int x, int y]
+    {
         get => this.pixels[x, y];
         set => this.pixels[x, y] = value;
     }
 
-    public T this[(int x, int y) index] {
+    public T this[(int x, int y) index]
+    {
         get => this.pixels[index.x, index.y];
         set => this.pixels[index.x, index.y] = value;
     }
@@ -57,12 +57,6 @@ public class EffectMatrix<T>
 
     public virtual void OnLoad()
     {
-        this.layer = new PixelLayer();
-
-        var (vertices, indices) = GeneratePixels();
-        this.layer.vertices = vertices;
-        this.layer.indices = indices;
-
     }
 
     /// Generate the arrays of vertices and indices for rendering the pixel matrix.
