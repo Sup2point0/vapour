@@ -55,14 +55,7 @@ public class EffectMatrix<T>
 
     #region METHODS
 
-    public virtual void OnLoad()
-    {
-        this.layer = new PixelLayer();
-
-        var (vertices, indices) = GeneratePixels();
-        this.layer.vertices = vertices;
-        this.layer.indices = indices;
-    }
+    public virtual void OnLoad() {}
 
     public virtual void Update() {}
 
@@ -70,7 +63,7 @@ public class EffectMatrix<T>
     public (float[] vertices, uint[] indices) GeneratePixels(float[]? init_value = null)
     {
         int area, len;
-        int chunk, offset, stride;
+        int chunk, stride, offset;
 
         // generate vertices
         area = (this.width +1) * (this.height +1);
@@ -109,8 +102,6 @@ public class EffectMatrix<T>
         }
 
         // generate indices
-        int next_offset;
-
         area = this.width * this.height;
         len = area * 6;
         var indices = new uint[len];
@@ -118,27 +109,26 @@ public class EffectMatrix<T>
         for (int i = 0; i < this.width; i++)
         {
             // 2 triangles per pixel
-            chunk = this.width * 6;
+            chunk = this.height * 3 * 2;
             offset = i * chunk;
-            next_offset = (i+1) * chunk;
             
             for (int j = 0; j < this.height; j++)
             {
-                stride = j * 6;
+                stride = j * 3 * 2;
 
                 // upper-left triangle
-                indices[offset + stride]    = (uint)(offset +j);
-                indices[offset + stride +1] = (uint)(offset +j +1);
-                indices[offset + stride +2] = (uint)(next_offset +j +1);
+                indices[offset + stride   ] = (uint)( (this.height +1) *  i    +j   );
+                indices[offset + stride +1] = (uint)( (this.height +1) *  i    +j +1);
+                indices[offset + stride +2] = (uint)( (this.height +1) * (i+1) +j +1);
 
                 // lower-right triangle
-                indices[offset + stride +3] = (uint)(offset +j);
-                indices[offset + stride +4] = (uint)(next_offset +j);
-                indices[offset + stride +5] = (uint)(next_offset +j +1);
+                indices[offset + stride +3] = (uint)( (this.height +1) *  i    +j   );
+                indices[offset + stride +4] = (uint)( (this.height +1) * (i+1) +j   );
+                indices[offset + stride +5] = (uint)( (this.height +1) * (i+1) +j +1);
             }
         }
 
-        return (vertices: vertices, indices: indices);
+        return (vertices, indices);
     }
 
     // TODO
