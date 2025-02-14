@@ -13,5 +13,5 @@ public static class Rand
 
     /// Randomly pick between `-1` or `1`.
     public static int Direction()
-        => 2 * _rand.Next(2) - 1;
+        => Norm.Signed(_rand.Next(2));
 }
