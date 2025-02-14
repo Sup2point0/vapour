@@ -1,9 +1,12 @@
+using Vapour.Utils;
+
 namespace Vapour.Effects;
 
 
 /// <summary>
 /// A matrix of pixels for tracking effects.
 /// </summary>
+/// <typeparam name="T">The type of data stored in each pixel.</typeparam>
 public class EffectMatrix<T>
 {
     #region FIELDS
@@ -59,7 +62,10 @@ public class EffectMatrix<T>
 
     public virtual void Update() {}
 
+    /// <summary>
     /// Generate the arrays of vertices and indices for rendering the pixel matrix.
+    /// </summary>
+    /// <param name="init_value">Initial value for each pixel in the matrix, appended after <c>(x, y, z)</c>.</param>
     public (float[] vertices, uint[] indices) GeneratePixels(float[]? init_value = null)
     {
         int area, len;
@@ -74,15 +80,15 @@ public class EffectMatrix<T>
 
         for (int i = 0; i <= this.width; i++)
         {
-            frac_x = (float) i / this.width;
+            frac_x = Norm.Signed((float) i / this.width);
 
             // starting index for current column
-            chunk = this.width * this.vertex_chunk_size;
+            chunk = (this.height +1) * this.vertex_chunk_size;
             offset = i * chunk;
 
             for (int j = 0; j <= this.height; j++)
             {
-                frac_y = (float) j / this.height;
+                frac_y = Norm.Signed((float) j / this.height);
 
                 stride = j * this.vertex_chunk_size;
 
@@ -129,12 +135,6 @@ public class EffectMatrix<T>
         }
 
         return (vertices, indices);
-    }
-
-    // TODO
-    public (float[] vertices, uint[] indices) UpdatePixels()
-    {
-        return (vertices: new float[0], indices: new uint[0]);
     }
 
     #endregion

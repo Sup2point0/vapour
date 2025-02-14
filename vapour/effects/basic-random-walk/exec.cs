@@ -1,9 +1,9 @@
-namespace Vapour.Effects;
+namespace Vapour.Effects.BasicRandomWalk;
 
 using Vapour.Effects;
 
 
-public class BasicRandomWalkEffect : EffectExecutive<bool>
+public class BasicRandomWalkEffect : EffectExecutive<bool, BasicRandomWalkMatrix>
 {
     public BasicRandomWalkEffect(int size) : base()
     {
@@ -13,14 +13,14 @@ public class BasicRandomWalkEffect : EffectExecutive<bool>
 
     public override void OnLoad()
     {
+        this.matrix.OnLoad();
+        this.layer.OnLoad();
     }
 
     public override void Update()
     {
-        this.matrix.Update();
-    
-        var (vertices, indices) = this.matrix.UpdatePixels();
-        this.layer.vertices = vertices;
-        this.layer.indices = indices;
+        var walker = this.matrix.walker;
+        walker.Update();
+        this.matrix[walker.xy] = true;
     }
 }
