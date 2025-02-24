@@ -1,17 +1,19 @@
 namespace Vapour;
 
+using Vapour.Effects;
+using Vapour.Effects.BasicRandomWalk;
 
 public class Program
 {
     public static void Main(string[] args)
     {
         var pict = new TextureLayer();
-        var pixels = new PixelLayer();
+        var effect = new BasicRandomWalkEffect(3);
         
         using (
-            var window = new Window(1200, 1200) {
+            Window<bool, BasicRandomWalkMatrix> window = new(1200, 1200) {
                 pict = pict,
-                pixels = pixels,
+                effects = [effect],
             }
         )
         {

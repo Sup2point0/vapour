@@ -1,24 +1,29 @@
+namespace Vapour;
+
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
+using Vapour.Effects;
 
-class Window : GameWindow
+
+class Window<T, TMatrix> : GameWindow where TMatrix : EffectMatrix<T>
 {
     #region ATTRIBUTES
 
     public required Layer pict;
-    public required Layer pixels;
+
+    /// <summary>
+    /// A list of effects to apply on top of the picture.
+    /// </summary>
+    public required EffectExecutive<T, TMatrix>[] effects;
 
     #endregion
 
     #region CORE
 
-    public Window(
-        int width,
-        int height
-    ) :
+    public Window(int width, int height) :
         base(
             GameWindowSettings.Default,
             new NativeWindowSettings() {
@@ -36,7 +41,9 @@ class Window : GameWindow
     {
         base.OnLoad();
         pict.OnLoad();
-        pixels.OnLoad();
+        foreach (var effect in effects) {
+            effect.OnLoad();
+        }
 
         GL.ClearColor(0.03584f, 0.0922f, 0.24582f, 1.0f);
     }
@@ -48,7 +55,9 @@ class Window : GameWindow
         GL.Clear(ClearBufferMask.ColorBufferBit);
 
         pict.OnRenderFrame();
-        pixels.OnRenderFrame();
+        foreach (var effect in effects) {
+            effect.Update();
+        }
 
         SwapBuffers();
     }
@@ -74,7 +83,9 @@ class Window : GameWindow
         base.OnUnload();
 
         pict.shader?.Dispose();
-        pixels.shader?.Dispose();
+        foreach (var effect in effects) {
+            effect.layer.shader?.Dispose();
+        }
     }
 
     #endregion

@@ -8,8 +8,14 @@ namespace Vapour.Effects;
 /// <typeparam name="TMatrix">The subclass of <c>EffectMatrix</c> used by the effect.</typeparam>
 public abstract class EffectExecutive<T, TMatrix> where TMatrix : EffectMatrix<T>
 {
-    public required TMatrix matrix;
-    public required PixelLayer layer;
+    public TMatrix matrix;
+    public PixelLayer layer;
+
+    public EffectExecutive(TMatrix matrix, PixelLayer layer)
+    {
+        this.matrix = matrix;
+        this.layer = layer;
+    }
 
     /// <summary>
     /// Access the value of a single pixel in the matrix. Modifications will automatically be synced with the effect's <c>.layer.vertices</c>.
@@ -31,5 +37,8 @@ public abstract class EffectExecutive<T, TMatrix> where TMatrix : EffectMatrix<T
 
     public virtual void OnLoad() {}
     
-    public virtual void Update() {}
+    public virtual void Update()
+    {
+        this.layer.OnRenderFrame();
+    }
 }
