@@ -3,6 +3,8 @@ using OpenTK.Graphics.OpenGL4;
 
 public class PixelLayer : Layer
 {
+    public int vertex_chunk_size { get; init; } = 3;
+
     public override void OnLoad()
     {
         base.OnLoad();
@@ -36,8 +38,18 @@ public class PixelLayer : Layer
             size: 3,
             VertexAttribPointerType.Float,
             normalized: false,
-            stride: 3 * sizeof(float),
+            stride: this.vertex_chunk_size * sizeof(float),
             offset: 0
+        );
+
+        GL.EnableVertexAttribArray(3);
+        GL.VertexAttribPointer(
+            index: 3,
+            size: this.vertex_chunk_size - 3,
+            VertexAttribPointerType.Float,
+            normalized: false,
+            stride: this.vertex_chunk_size * sizeof(float),
+            offset: 3
         );
     }
 
