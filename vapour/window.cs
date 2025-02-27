@@ -8,16 +8,16 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using Vapour.Effects;
 
 
-class Window<T, TMatrix> : GameWindow where TMatrix : EffectMatrix<T>
+class Window : GameWindow
 {
     #region ATTRIBUTES
 
     public required Layer pict;
 
     /// <summary>
-    /// A list of effects to apply on top of the picture.
+    /// A series of effects to apply on top of the picture.
     /// </summary>
-    public required EffectExecutive<T, TMatrix>[] effects;
+    public required EffectExecutive[] effects;
 
     #endregion
 
@@ -55,9 +55,9 @@ class Window<T, TMatrix> : GameWindow where TMatrix : EffectMatrix<T>
         GL.Clear(ClearBufferMask.ColorBufferBit);
 
         pict.OnRenderFrame();
-        foreach (var effect in effects) {
-            effect.Update();
-        }
+        // foreach (var effect in effects) {
+        //     effect.Update();
+        // }
 
         SwapBuffers();
     }

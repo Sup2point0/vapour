@@ -4,10 +4,21 @@ namespace Vapour.Effects;
 
 
 /// <summary>
+/// Non-generic abstract base class for typing without generics.
+/// </summary>
+public abstract class EffectMatrix
+{
+    public virtual void OnLoad() {}
+
+    public virtual void Update() {}
+}
+
+
+/// <summary>
 /// A matrix of pixels for tracking effects.
 /// </summary>
 /// <typeparam name="T">The type of data stored in each pixel.</typeparam>
-public class EffectMatrix<T>
+public class EffectMatrix<T> : EffectMatrix
 {
     #region FIELDS
 
@@ -36,10 +47,13 @@ public class EffectMatrix<T>
         this.pixels = new T[this.width, this.height];
     }
 
+    public EffectMatrix((int width, int height) size) : this(size.width, size.height)
+    {}
+
     public EffectMatrix(int size) : this(size, size)
     {}
 
-    public EffectMatrix(params int[] size) : this(size[0], size[1])
+    public EffectMatrix(int[] size) : this(size[0], size[1])
     {}
 
     public T this[int x, int y]
@@ -57,10 +71,6 @@ public class EffectMatrix<T>
     #endregion
 
     #region METHODS
-
-    public virtual void OnLoad() {}
-
-    public virtual void Update() {}
 
     /// <summary>
     /// Generate the arrays of vertices and indices for rendering the pixel matrix.

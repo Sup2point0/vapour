@@ -2,19 +2,36 @@ namespace Vapour.Effects;
 
 
 /// <summary>
+/// Non-generic abstract base class for typing without generics.
+/// </summary>
+public abstract class EffectExecutive
+{    
+    public PixelLayer layer;
+
+    public EffectExecutive(PixelLayer layer)
+    {
+        this.layer = layer;
+    }
+
+    public virtual void OnLoad() {}
+    
+    public virtual void Update() {}
+}
+
+
+/// <summary>
 /// A wrapper that handles an <c>EffectMatrix</c>, its effect processors (<c>Walker</c>), and its linked <c>PixelLayer</c>.
 /// </summary>
 /// <typeparam name="T">The type of data stored in each pixel.</typeparam>
 /// <typeparam name="TMatrix">The subclass of <c>EffectMatrix</c> used by the effect.</typeparam>
-public abstract class EffectExecutive<T, TMatrix> where TMatrix : EffectMatrix<T>
+public abstract class EffectExecutive<T, TMatrix> : EffectExecutive
+    where TMatrix : EffectMatrix<T>
 {
     public TMatrix matrix;
-    public PixelLayer layer;
 
-    public EffectExecutive(TMatrix matrix, PixelLayer layer)
+    public EffectExecutive(TMatrix matrix, PixelLayer layer) : base(layer)
     {
         this.matrix = matrix;
-        this.layer = layer;
     }
 
     /// <summary>
@@ -34,10 +51,8 @@ public abstract class EffectExecutive<T, TMatrix> where TMatrix : EffectMatrix<T
         get => this.matrix[index];
         set => this[index.x, index.y] = value;
     }
-
-    public virtual void OnLoad() {}
     
-    public virtual void Update()
+    public override void Update()
     {
         this.layer.OnRenderFrame();
     }

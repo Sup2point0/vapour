@@ -10,12 +10,10 @@ public class Program
         var pict = new TextureLayer();
         var effect = new BasicRandomWalkEffect(3);
         
-        using (
-            Window<bool, BasicRandomWalkMatrix> window = new(1200, 1200) {
-                pict = pict,
-                effects = [effect],
-            }
-        )
+        using (var window = new Window(1200, 1200) {
+            pict = pict,
+            effects = [effect],
+        })
         {
             window.Run();
         }
