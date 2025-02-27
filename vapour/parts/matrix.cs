@@ -109,7 +109,8 @@ public class EffectMatrix<T> : EffectMatrix
                 vertices[offset + stride +2] = 0f;
 
                 for (int k = 0; k < this.vertex_chunk_size -3; k++) {
-                    vertices[offset + stride +3 +k] = init_value[k];
+                    // vertices[offset + stride +3 +k] = init_value[k];
+                    vertices[offset + stride +3 +k] = Rand.Scale();
                 }
             }
         }
