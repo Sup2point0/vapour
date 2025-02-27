@@ -15,14 +15,18 @@ public class BasicRandomWalkEffect : EffectExecutive<bool, BasicRandomWalkMatrix
     public override void OnLoad()
     {
         this.matrix.OnLoad();
+
+        var (vertices, indices) = this.matrix.GeneratePixels();
+        this.layer.vertices = vertices;
+        this.layer.indices = indices;
         this.layer.OnLoad();
     }
 
     public override void Update()
     {
         var walker = this.matrix.walker;
-        walker.Update();
-        this.matrix[walker.xy] = true;
+        // walker.Update();
+        // this.matrix[walker.xy] = true;
 
         base.Update();
     }

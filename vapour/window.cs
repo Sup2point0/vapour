@@ -55,9 +55,9 @@ class Window : GameWindow
         GL.Clear(ClearBufferMask.ColorBufferBit);
 
         pict.OnRenderFrame();
-        // foreach (var effect in effects) {
-        //     effect.Update();
-        // }
+        foreach (var effect in effects) {
+            effect.Update();
+        }
 
         SwapBuffers();
     }

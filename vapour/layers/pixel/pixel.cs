@@ -3,38 +3,6 @@ using OpenTK.Graphics.OpenGL4;
 
 public class PixelLayer : Layer
 {
-    public PixelLayer() : base(
-        vertices: [
-            -1.0f, -1.0f, 0f,
-            -1.0f, -0.9f, 0f,
-            -0.9f, -0.9f, 0f,
-            -0.9f, -1.0f, 0f,
-            -0.9f, -0.9f, 0f,
-            -0.9f, -0.8f, 0f,
-            -0.8f, -0.8f, 0f,
-            -0.8f, -0.9f, 0f,
-            -0.1f, -0.1f, 0f,
-            -0.1f, -0.2f, 0f,
-            -0.2f, -0.2f, 0f,
-            -0.2f, -0.1f, 0f,
-            0.1f, 0.1f, 0f,
-            0.1f, 0.2f, 0f,
-            0.2f, 0.2f, 0f,
-            0.2f, 0.1f, 0f,
-        ],
-        indices: [
-            0, 1, 2,
-            2, 0, 3,
-            4, 5, 6,
-            6, 4, 7,
-            8, 9, 10,
-            10, 8, 11,
-            12, 13, 14,
-            14, 12, 15,
-        ]
-    )
-    {}
-
     public override void OnLoad()
     {
         base.OnLoad();

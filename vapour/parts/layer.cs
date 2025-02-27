@@ -11,12 +11,6 @@ public class Layer
     public int ebo;
 
     public Shader? shader;
-    
-    public Layer(float[] vertices, uint[] indices)
-    {
-        this.vertices = vertices;
-        this.indices = indices;
-    }
 
     /// <summary>
     /// Initialise the layer by calling relevant OpenGL functions. Call from `OpenTK.GameWindow.OnLoad()`.
