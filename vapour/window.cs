@@ -40,6 +40,10 @@ class Window : GameWindow
     protected override void OnLoad()
     {
         base.OnLoad();
+
+        GL.Enable(EnableCap.Blend);
+        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
         pict.OnLoad();
         foreach (var effect in effects) {
             effect.OnLoad();

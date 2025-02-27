@@ -8,9 +8,7 @@ public class BasicRandomWalkEffect : EffectExecutive<bool, BasicRandomWalkMatrix
     public BasicRandomWalkEffect(int size) :
         base(
             matrix: new BasicRandomWalkMatrix(size),
-            layer: new PixelLayer() {
-                vertex_chunk_size = 4
-            }
+            layer: new PixelLayer()
         )
     {}
 

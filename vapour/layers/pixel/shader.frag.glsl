@@ -1,10 +1,12 @@
 // Fragment Shader
 #version 330 core
 
+in vec4 col_forwarded;
+
 out vec4 col;
 
 
 void main()
 {
-    col = vec4(1.0f, 0, 0.5f, 1.0f);
+    col = col_forwarded;
 }

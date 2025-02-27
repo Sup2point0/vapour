@@ -3,7 +3,11 @@ using OpenTK.Graphics.OpenGL4;
 
 public class PixelLayer : Layer
 {
-    public int vertex_chunk_size { get; init; } = 3;
+    /// <summary>
+    /// How many values are associated with each vertex.
+    /// Set to 7 for <c>(x, y, z, r, g, b, a)</c>.
+    /// </summary>
+    public static readonly int vertex_chunk_size = 7;
 
     public override void OnLoad()
     {
@@ -32,24 +36,26 @@ public class PixelLayer : Layer
             frag: "layers/pixel/shader.frag.glsl");
         this.shader.Use();
 
+        // cords
         GL.EnableVertexAttribArray(2);
         GL.VertexAttribPointer(
             index: 2,
             size: 3,
             VertexAttribPointerType.Float,
             normalized: false,
-            stride: this.vertex_chunk_size * sizeof(float),
+            stride: sizeof(float) * PixelLayer.vertex_chunk_size,
             offset: 0
         );
 
+        // col
         GL.EnableVertexAttribArray(3);
         GL.VertexAttribPointer(
             index: 3,
-            size: this.vertex_chunk_size - 3,
+            size: 4,
             VertexAttribPointerType.Float,
             normalized: false,
-            stride: this.vertex_chunk_size * sizeof(float),
-            offset: 3
+            stride: sizeof(float) * PixelLayer.vertex_chunk_size,
+            offset: sizeof(float) * 3
         );
     }
 

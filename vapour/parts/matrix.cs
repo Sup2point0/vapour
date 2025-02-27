@@ -28,8 +28,8 @@ public class EffectMatrix<T> : EffectMatrix
     public readonly int width;
     public readonly int height;
 
-    /// Number of points for each vertex in the vertex array. Defaults to 4 for (x, y, z, brightness).
-    public int vertex_chunk_size { get; init; } = 4;
+    /// Number of points for each vertex in the vertex array. Defaults to 7 for (x, y, z, r, g, b, a).
+    public int vertex_chunk_size { get; init; } = 7;
 
     public (int, int) centre {
         get => (this.width / 2, this.height / 2);
@@ -78,6 +78,8 @@ public class EffectMatrix<T> : EffectMatrix
     /// <param name="init_value">Initial value for each pixel in the matrix, appended after <c>(x, y, z)</c>.</param>
     public (float[] vertices, uint[] indices) GeneratePixels(float[]? init_value = null)
     {
+        init_value ??= [1f, 0f, 0.4f, 0.9f];  // default to no colour
+        
         int area, len;
         int chunk, stride, offset;
 
@@ -106,13 +108,8 @@ public class EffectMatrix<T> : EffectMatrix
                 vertices[offset + stride +1] = frac_y;
                 vertices[offset + stride +2] = 0f;
 
-                if (init_value == null) {
-                    vertices[offset + stride +3] = 0f;  // start as no colour
-                }
-                else {
-                    for (int k = 0; k < this.vertex_chunk_size; k++) {
-                        vertices[offset + stride +3 +k] = init_value[k];
-                    }
+                for (int k = 0; k < this.vertex_chunk_size -3; k++) {
+                    vertices[offset + stride +3 +k] = init_value[k];
                 }
             }
         }

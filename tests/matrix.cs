@@ -31,13 +31,14 @@ public class Test_EffectMatrix
     public void Test_GenerateVertices()
     {
         EffectMatrix<bool> m = new(3);
+        int s = 7;
 
         var (vertices, indices) = m.GeneratePixels();
 
         Console.WriteLine("vertices =");
         int i = 0;
         foreach (var each in vertices) {
-            if (i % 4 == 0) {
+            if (i % s == 0) {
                 Console.Write("\n");
             }
             Console.Write(Math.Round(each, 4).ToString("0.0000"));
@@ -45,28 +46,28 @@ public class Test_EffectMatrix
             i++;
         }
 
-        Assert.IsTrue(vertices.Length == 4 * 4 * 4);
+        Assert.IsTrue(vertices.Length == 4 * 4 * s);
 
-        // outer left column
-        Assert.IsTrue(Prox.AreClose(vertices[ 0.. 4], new float[] { -1f    , -1f    , 0f, 0f }));
-        Assert.IsTrue(Prox.AreClose(vertices[ 4.. 8], new float[] { -1f    , -1f / 3, 0f, 0f }));
-        Assert.IsTrue(Prox.AreClose(vertices[ 8..12], new float[] { -1f    ,  1f / 3, 0f, 0f }));
-        Assert.IsTrue(Prox.AreClose(vertices[12..16], new float[] { -1f    ,  1f    , 0f, 0f }));
+        // outer left column                                                // cords               // col
+        Assert.IsTrue(Prox.AreClose(vertices[( 0*s)..( 1*s)], new float[] { -1f    , -1f    , 0f,  0f, 0f, 0f, 0.5f }));
+        Assert.IsTrue(Prox.AreClose(vertices[( 1*s)..( 2*s)], new float[] { -1f    , -1f / 3, 0f,  0f, 0f, 0f, 0.5f }));
+        Assert.IsTrue(Prox.AreClose(vertices[( 2*s)..( 3*s)], new float[] { -1f    ,  1f / 3, 0f,  0f, 0f, 0f, 0.5f }));
+        Assert.IsTrue(Prox.AreClose(vertices[( 3*s)..( 4*s)], new float[] { -1f    ,  1f    , 0f,  0f, 0f, 0f, 0.5f }));
         // inner left column
-        Assert.IsTrue(Prox.AreClose(vertices[16..20], new float[] { -1f / 3, -1f    , 0f, 0f }));
-        Assert.IsTrue(Prox.AreClose(vertices[20..24], new float[] { -1f / 3, -1f / 3, 0f, 0f }));
-        Assert.IsTrue(Prox.AreClose(vertices[24..28], new float[] { -1f / 3,  1f / 3, 0f, 0f }));
-        Assert.IsTrue(Prox.AreClose(vertices[28..32], new float[] { -1f / 3,  1f    , 0f, 0f }));
+        Assert.IsTrue(Prox.AreClose(vertices[( 4*s)..( 5*s)], new float[] { -1f / 3, -1f    , 0f,  0f, 0f, 0f, 0.5f }));
+        Assert.IsTrue(Prox.AreClose(vertices[( 5*s)..( 6*s)], new float[] { -1f / 3, -1f / 3, 0f,  0f, 0f, 0f, 0.5f }));
+        Assert.IsTrue(Prox.AreClose(vertices[( 6*s)..( 7*s)], new float[] { -1f / 3,  1f / 3, 0f,  0f, 0f, 0f, 0.5f }));
+        Assert.IsTrue(Prox.AreClose(vertices[( 7*s)..( 8*s)], new float[] { -1f / 3,  1f    , 0f,  0f, 0f, 0f, 0.5f }));
         // inner right column
-        Assert.IsTrue(Prox.AreClose(vertices[32..36], new float[] {  1f / 3, -1f    , 0f, 0f }));
-        Assert.IsTrue(Prox.AreClose(vertices[36..40], new float[] {  1f / 3, -1f / 3, 0f, 0f }));
-        Assert.IsTrue(Prox.AreClose(vertices[40..44], new float[] {  1f / 3,  1f / 3, 0f, 0f }));
-        Assert.IsTrue(Prox.AreClose(vertices[44..48], new float[] {  1f / 3,  1f    , 0f, 0f }));
+        Assert.IsTrue(Prox.AreClose(vertices[( 8*s)..( 9*s)], new float[] {  1f / 3, -1f    , 0f,  0f, 0f, 0f, 0.5f }));
+        Assert.IsTrue(Prox.AreClose(vertices[( 9*s)..(10*s)], new float[] {  1f / 3, -1f / 3, 0f,  0f, 0f, 0f, 0.5f }));
+        Assert.IsTrue(Prox.AreClose(vertices[(10*s)..(11*s)], new float[] {  1f / 3,  1f / 3, 0f,  0f, 0f, 0f, 0.5f }));
+        Assert.IsTrue(Prox.AreClose(vertices[(11*s)..(12*s)], new float[] {  1f / 3,  1f    , 0f,  0f, 0f, 0f, 0.5f }));
         // outer right column
-        Assert.IsTrue(Prox.AreClose(vertices[48..52], new float[] {  1f    , -1f    , 0f, 0f }));
-        Assert.IsTrue(Prox.AreClose(vertices[52..56], new float[] {  1f    , -1f / 3, 0f, 0f }));
-        Assert.IsTrue(Prox.AreClose(vertices[56..60], new float[] {  1f    ,  1f / 3, 0f, 0f }));
-        Assert.IsTrue(Prox.AreClose(vertices[60..64], new float[] {  1f    ,  1f    , 0f, 0f }));
+        Assert.IsTrue(Prox.AreClose(vertices[(12*s)..(13*s)], new float[] {  1f    , -1f    , 0f,  0f, 0f, 0f, 0.5f }));
+        Assert.IsTrue(Prox.AreClose(vertices[(13*s)..(14*s)], new float[] {  1f    , -1f / 3, 0f,  0f, 0f, 0f, 0.5f }));
+        Assert.IsTrue(Prox.AreClose(vertices[(14*s)..(15*s)], new float[] {  1f    ,  1f / 3, 0f,  0f, 0f, 0f, 0.5f }));
+        Assert.IsTrue(Prox.AreClose(vertices[(15*s)..(16*s)], new float[] {  1f    ,  1f    , 0f,  0f, 0f, 0f, 0.5f }));
     }
 
     [TestMethod]
